@@ -44,3 +44,12 @@ Completed:
 - Created DynamoDB table
 - Added least-privilege IAM permission for Lambda
 - Successfully stored items in DynamoDB
+
+- ### Read + Display Messages
+
+Completed:
+- Added GET /messages route
+- Added DynamoDB Scan permission
+- Updated Lambda to read messages from DynamoDB
+- Updated frontend to display saved messages
+- Confirmed messages appear on the webpage
