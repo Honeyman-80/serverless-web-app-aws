@@ -23,3 +23,24 @@ Setting up professional project structure before building AWS services.
 - Added public read bucket policy for learning/demo purposes
 - Confirmed website loads in browser
 - Confirmed JavaScript button interaction works
+
+### API Gateway + Lambda + DynamoDB
+
+Built first complete serverless backend flow.
+
+Architecture:
+
+Browser
+→ API Gateway
+→ Lambda
+→ DynamoDB
+
+Completed:
+- Created Lambda backend
+- Created HTTP API Gateway
+- Added GET /hello route
+- Connected frontend JavaScript fetch() to API Gateway
+- Configured CORS for browser access
+- Created DynamoDB table
+- Added least-privilege IAM permission for Lambda
+- Successfully stored items in DynamoDB
