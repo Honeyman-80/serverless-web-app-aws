@@ -53,3 +53,30 @@ Completed:
 - Updated Lambda to read messages from DynamoDB
 - Updated frontend to display saved messages
 - Confirmed messages appear on the webpage
+
+- CloudFront + CI/CD Deployment
+
+Built automated frontend deployment pipeline.
+
+Architecture:
+
+GitHub
+→ GitHub Actions
+→ IAM Role (OIDC)
+→ S3
+→ CloudFront
+→ Browser
+
+Completed:
+
+Created dedicated GitHub Actions IAM role
+Configured OIDC trust between GitHub and AWS
+Added least-privilege S3 deployment permissions
+Created GitHub Actions deployment workflow
+Configured automatic frontend deployment to S3
+Created CloudFront distribution
+Configured S3 bucket as CloudFront origin
+Enabled private S3 access from CloudFront
+Configured default root object (index.html)
+Added CloudFront cache invalidation step to deployment workflow
+Confirmed automatic deployment + cache invalidation working
