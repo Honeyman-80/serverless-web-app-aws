@@ -13,9 +13,18 @@ async function loadMessages() {
 
   data.messages.forEach((item) => {
     const li = document.createElement("li");
-    li.textContent = item.message;
+
+    const messageText = document.createElement("span");
+    messageText.textContent = item.message;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+
+    li.appendChild(messageText);
+    li.appendChild(deleteButton);
+
     messagesList.appendChild(li);
-  });
+});
 }
 
 button.addEventListener("click", async () => {
