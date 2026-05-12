@@ -12,22 +12,26 @@ async function loadMessages() {
   messagesList.innerHTML = "";
 
   data.messages.forEach((item) => {
-    const li = document.createElement("li");
+  const li = document.createElement("li");
 
-    const messageText = document.createElement("span");
-    messageText.textContent = item.message;
+  const messageText = document.createElement("span");
+  messageText.textContent = item.message;
 
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete";
+  const deleteButton = document.createElement("button");
+  deleteButton.textContent = "Delete";
 
-    deleteButton.addEventListener("click", async () => {
-      console.log("Delete message:", item.id);
+  deleteButton.addEventListener("click", async () => {
+    await fetch(`${apiUrl}/messages/${item.id}`, {
+      method: "DELETE"
     });
 
-    li.appendChild(messageText);
-    li.appendChild(deleteButton);
+    await loadMessages();
+  });
 
-    messagesList.appendChild(li);
+  li.appendChild(messageText);
+  li.appendChild(deleteButton);
+
+  messagesList.appendChild(li);
 });
 }
 
