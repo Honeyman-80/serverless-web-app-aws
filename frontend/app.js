@@ -20,6 +20,10 @@ async function loadMessages() {
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete";
 
+    deleteButton.addEventListener("click", async () => {
+      console.log("Delete message:", item.id);
+    });
+
     li.appendChild(messageText);
     li.appendChild(deleteButton);
 
