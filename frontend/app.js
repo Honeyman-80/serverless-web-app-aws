@@ -16,6 +16,29 @@ async function loadMessages() {
 
   const messageText = document.createElement("span");
   messageText.textContent = item.message;
+  messageText.addEventListener("click", () => {
+    const input = document.createElement("input");
+    input.value = item.message;
+
+    li.replaceChild(input, messageText);
+    input.focus();
+
+    input.addEventListener("keydown", async (event) => {
+      if (event.key === "Enter") {
+        await fetch(`${apiUrl}/messages/${item.id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: input.value
+          })
+        });
+
+        await loadMessages();
+      }
+    });
+  });
 
   const deleteButton = document.createElement("button");
   deleteButton.textContent = "Delete";
