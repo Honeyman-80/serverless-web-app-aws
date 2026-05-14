@@ -43,3 +43,9 @@ Resources:
           Properties:
             Path: /message
             Method: post
+
+        GetMessagesApi:
+          Type: Api
+          Properties:
+            Path: /messages
+            Method: get
