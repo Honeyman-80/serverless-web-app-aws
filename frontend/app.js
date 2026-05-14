@@ -1,3 +1,6 @@
+const cognitoDomain = "https://us-east-1kcts80rzl.auth.us-east-1.amazoncognito.com";
+const clientId = "7qdugdn6gq085h6belkqakbspn";
+const redirectUri = "https://d2vtcezlte2dnf.cloudfront.net";
 const button = document.getElementById("testButton");
 const message = document.getElementById("message");
 const messageInput = document.getElementById("messageInput");
