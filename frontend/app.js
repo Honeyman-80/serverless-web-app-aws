@@ -8,6 +8,30 @@ const messagesList = document.getElementById("messagesList");
 
 const apiUrl = "https://jkr4rh399c.execute-api.us-east-1.amazonaws.com";
 
+async function exchangeCodeForToken(code) {
+  const response = await fetch(`${cognitoDomain}/oauth2/token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: new URLSearchParams({
+      grant_type: "authorization_code",
+      client_id: clientId,
+      code: code,
+      redirect_uri: redirectUri
+    })
+  });
+
+  const data = await response.json();
+
+  if (data.id_token) {
+    localStorage.setItem("idToken", data.id_token);
+    window.history.replaceState({}, document.title, "/");
+  }
+
+  return data;
+}
+
 async function loadMessages() {
   const response = await fetch(`${apiUrl}/messages`);
   const data = await response.json();
