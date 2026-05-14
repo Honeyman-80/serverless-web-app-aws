@@ -1,12 +1,22 @@
 const cognitoDomain = "https://us-east-1kcts80rzl.auth.us-east-1.amazoncognito.com";
 const clientId = "7qdugdn6gq085h6belkqakbspn";
 const redirectUri = "https://d2vtcezlte2dnf.cloudfront.net";
+
 const button = document.getElementById("testButton");
 const message = document.getElementById("message");
 const messageInput = document.getElementById("messageInput");
 const messagesList = document.getElementById("messagesList");
 
 const apiUrl = "https://jkr4rh399c.execute-api.us-east-1.amazonaws.com";
+
+function getAuthHeaders() {
+  const idToken = localStorage.getItem("idToken");
+
+  return {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${idToken}`
+  };
+}
 
 async function exchangeCodeForToken(code) {
   const response = await fetch(`${cognitoDomain}/oauth2/token`, {
@@ -32,57 +42,69 @@ async function exchangeCodeForToken(code) {
   return data;
 }
 
+const params = new URLSearchParams(window.location.search);
+const code = params.get("code");
+
+if (code) {
+  exchangeCodeForToken(code).then(() => {
+    loadMessages();
+  });
+}
+
 async function loadMessages() {
-  const response = await fetch(`${apiUrl}/messages`);
+  const response = await fetch(`${apiUrl}/messages`, {
+    method: "GET",
+    headers: getAuthHeaders()
+  });
+
   const data = await response.json();
 
   messagesList.innerHTML = "";
 
   data.messages.forEach((item) => {
-  const li = document.createElement("li");
+    const li = document.createElement("li");
 
-  const messageText = document.createElement("span");
-  messageText.textContent = item.message;
-  messageText.addEventListener("click", () => {
-    const input = document.createElement("input");
-    input.value = item.message;
+    const messageText = document.createElement("span");
+    messageText.textContent = item.message;
 
-    li.replaceChild(input, messageText);
-    input.focus();
+    messageText.addEventListener("click", () => {
+      const input = document.createElement("input");
+      input.value = item.message;
 
-    input.addEventListener("keydown", async (event) => {
-      if (event.key === "Enter") {
-        await fetch(`${apiUrl}/messages/${item.id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            message: input.value
-          })
-        });
+      li.replaceChild(input, messageText);
+      input.focus();
 
-        await loadMessages();
-      }
-    });
-  });
+      input.addEventListener("keydown", async (event) => {
+        if (event.key === "Enter") {
+          await fetch(`${apiUrl}/messages/${item.id}`, {
+            method: "PATCH",
+            headers: getAuthHeaders(),
+            body: JSON.stringify({
+              message: input.value
+            })
+          });
 
-  const deleteButton = document.createElement("button");
-  deleteButton.textContent = "Delete";
-
-  deleteButton.addEventListener("click", async () => {
-    await fetch(`${apiUrl}/messages/${item.id}`, {
-      method: "DELETE"
+          await loadMessages();
+        }
+      });
     });
 
-    await loadMessages();
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+
+    deleteButton.addEventListener("click", async () => {
+      await fetch(`${apiUrl}/messages/${item.id}`, {
+        method: "DELETE",
+        headers: getAuthHeaders()
+      });
+
+      await loadMessages();
+    });
+
+    li.appendChild(messageText);
+    li.appendChild(deleteButton);
+    messagesList.appendChild(li);
   });
-
-  li.appendChild(messageText);
-  li.appendChild(deleteButton);
-
-  messagesList.appendChild(li);
-});
 }
 
 button.addEventListener("click", async () => {
@@ -90,9 +112,7 @@ button.addEventListener("click", async () => {
 
   const response = await fetch(`${apiUrl}/messages`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify({
       message: userMessage
     })
@@ -106,4 +126,6 @@ button.addEventListener("click", async () => {
   await loadMessages();
 });
 
-loadMessages();
+if (!code) {
+  loadMessages();
+}
