@@ -31,8 +31,15 @@ Resources:
             TableName: sam-messages-table
 
       Events:
+
         HelloApi:
           Type: Api
           Properties:
             Path: /hello
             Method: get
+
+        MessageApi:
+          Type: Api
+          Properties:
+            Path: /message
+            Method: post
