@@ -127,10 +127,6 @@ button.addEventListener("click", async () => {
   await loadMessages();
 });
 
-if (!code) {
-  loadMessages();
-}
-
 logoutButton.addEventListener("click", () => {
   localStorage.removeItem("idToken");
 
@@ -141,3 +137,20 @@ logoutButton.addEventListener("click", () => {
       logout_uri: redirectUri
     });
 });
+
+if (!code) {
+  const idToken = localStorage.getItem("idToken");
+
+  if (idToken) {
+    loadMessages();
+  } else {
+    window.location.href =
+      `${cognitoDomain}/login?` +
+      new URLSearchParams({
+        client_id: clientId,
+        response_type: "code",
+        scope: "openid email",
+        redirect_uri: redirectUri
+      });
+  }
+}
