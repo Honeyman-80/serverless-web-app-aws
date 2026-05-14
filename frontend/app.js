@@ -6,6 +6,7 @@ const button = document.getElementById("testButton");
 const message = document.getElementById("message");
 const messageInput = document.getElementById("messageInput");
 const messagesList = document.getElementById("messagesList");
+const logoutButton = document.getElementById("logoutButton");
 
 const apiUrl = "https://jkr4rh399c.execute-api.us-east-1.amazonaws.com";
 
@@ -129,3 +130,14 @@ button.addEventListener("click", async () => {
 if (!code) {
   loadMessages();
 }
+
+logoutButton.addEventListener("click", () => {
+  localStorage.removeItem("idToken");
+
+  window.location.href =
+    `${cognitoDomain}/logout?` +
+    new URLSearchParams({
+      client_id: clientId,
+      logout_uri: redirectUri
+    });
+});
