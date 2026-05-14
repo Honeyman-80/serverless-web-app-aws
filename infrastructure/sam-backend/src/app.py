@@ -35,6 +35,14 @@ def lambda_handler(event, context):
             "item": item
         })
 
+        if route_key == "GET /messages":
+
+        result = table.scan()
+
+        return response(200, {
+            "messages": result["Items"]
+        })
+    
     return response(404, {
         "message": "Route not found"
     })
