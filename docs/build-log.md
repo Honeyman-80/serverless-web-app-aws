@@ -331,6 +331,70 @@ The frontend application must validate session state before attempting authentic
 
 ---
 
+---
+
+# AWS SAM + Infrastructure as Code
+
+Learned how to deploy and manage serverless AWS infrastructure using AWS SAM (Serverless Application Model) and CloudFormation.
+
+## Architecture
+
+template.yaml
+↓
+SAM CLI
+↓
+CloudFormation Stack
+↓
+AWS Resources Created Automatically
+
+## Completed
+
+- Created first SAM project structure
+- Learned YAML basics and declarative infrastructure concepts
+- Created `template.yaml`
+- Created Lambda source code under `src/app.py`
+- Used SAM to automatically create:
+  - Lambda
+  - API Gateway
+  - DynamoDB
+  - IAM Role
+  - Lambda permissions
+  - API deployment/stage
+- Learned difference between:
+  - LogicalResourceId
+  - PhysicalResourceId
+- Deployed first CloudFormation stack:
+  - `sam-backend-demo`
+- Learned CloudFormation stack lifecycle and stack ownership concepts
+- Used:
+  - `sam build`
+  - `sam deploy`
+- Learned deployment artifact packaging process
+- Learned SAM managed deployment bucket purpose
+- Updated live infrastructure through Infrastructure as Code instead of AWS console
+- Added:
+  - `GET /hello`
+  - `POST /message`
+  - `GET /messages`
+- Successfully wrote items to DynamoDB through SAM-managed API Gateway + Lambda architecture
+- Learned difference between:
+  - REST API Lambda event format
+  - HTTP API Lambda event format
+- Debugged Lambda syntax errors and CloudWatch logs during deployment workflow
+
+## Key Learning
+
+Infrastructure as Code changes the workflow from:
+
+Manual AWS console configuration
+
+to:
+
+Version-controlled infrastructure deployments managed by CloudFormation.
+
+AWS resources are now reproducible, updateable, and deployable directly from code.
+
+
 ## Current Architecture
 
 CloudFront frontend  
