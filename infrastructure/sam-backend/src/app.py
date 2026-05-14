@@ -9,9 +9,7 @@ table = dynamodb.Table("sam-messages-table")
 
 def lambda_handler(event, context):
 
-    route_key = (
-        f"{event['requestContext']['http']['method']} "
-        f"{event['rawPath']}"
+    route_key = f"{event['httpMethod']} {event['path']}"
     )
 
     if route_key == "GET /hello":
