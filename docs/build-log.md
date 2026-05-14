@@ -300,6 +300,37 @@ Instead of scanning all records and filtering in Lambda, the app now queries the
 
 ---
 
+## Logout + Session Handling
+
+Added frontend logout flow and session validation logic.
+
+### Architecture
+
+Browser → Local Storage JWT → Cognito Logout → Redirect Back To Frontend
+
+### Completed
+
+- Added Logout button to frontend UI
+- Connected Logout button to JavaScript event listener
+- Removed `idToken` from browser local storage during logout
+- Redirected browser through Cognito logout endpoint
+- Redirected user back to CloudFront frontend after logout
+- Added startup check for valid `idToken`
+- Redirected unauthenticated users to Cognito login page
+- Prevented frontend from calling protected API routes without JWT
+- Fixed frontend 401 errors caused by missing token after logout
+- Confirmed logout flow works end-to-end
+
+### Key Learning
+
+Frontend authentication state is stored in the browser.
+
+Protected API routes require a valid JWT before requests are sent.
+
+The frontend application must validate session state before attempting authenticated API calls.
+
+---
+
 ## Current Architecture
 
 CloudFront frontend  
