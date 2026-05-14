@@ -35,7 +35,7 @@ def lambda_handler(event, context):
             "item": item
         })
 
-        if route_key == "GET /messages":
+    if route_key == "GET /messages":
 
         result = table.scan()
 
