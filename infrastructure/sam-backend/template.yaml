@@ -34,6 +34,13 @@ Resources:
       RedrivePolicy:
         deadLetterTargetArn: !GetAtt MessagesDLQ.Arn
         maxReceiveCount: 3
+
+  ObservabilityStack:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location: templates/observability.yaml
+      Parameters:
+        MessagesDLQName: !GetAtt MessagesDLQ.QueueName
   
   CreateMessageFunction:
     Type: AWS::Serverless::Function
