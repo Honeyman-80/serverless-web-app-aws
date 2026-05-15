@@ -410,6 +410,47 @@ Lambda backend
 DynamoDB table + GSI  
 
 ---
+Observability Module + DLQ Alarm Testing
+
+Built first nested SAM application module:
+
+Main stack
+└── ObservabilityStack
+    └── CloudWatch DLQ alarm
+
+Learned:
+- Nested SAM applications require CAPABILITY_AUTO_EXPAND
+- Nested templates are infrastructure ownership boundaries
+- Moving existing stateful resources between stacks is risky
+- CloudFormation tracks resources by Logical Resource ID ownership
+- Changesets should always be reviewed before deployment
+- Safe modularization is easier when adding new resources rather than moving existing ones
+
+Built CloudWatch alarm for:
+AWS/SQS → ApproximateNumberOfMessagesVisible
+
+Alarm behavior:
+- Triggered when DLQ message count > 0
+- TreatMissingData set to notBreaching
+- Alarm returned to OK after DLQ cleared
+
+Operational testing completed:
+1. Intentionally broke ProcessMessageFunction
+2. Sent message through API
+3. Message retried and moved to DLQ
+4. CloudWatch alarm entered ALARM state
+5. Fixed worker function
+6. Redrove DLQ messages back to source queue
+7. Message successfully processed into DynamoDB
+8. Alarm returned to OK
+
+Important operational mental models:
+- Async systems require observability
+- DLQ protects messages from permanent loss
+- Monitoring systems detect operational failures
+- Redrive is operational replay/recovery
+- CloudFormation rollback protected the stack during failed nested deployment
+- Validate/build/review changesets before deployment
 
 ## Current Features
 
