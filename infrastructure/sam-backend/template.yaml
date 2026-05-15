@@ -26,6 +26,10 @@ Resources:
       Runtime: python3.12
       CodeUri: src/
 
+      Environment:
+        Variables:
+          TABLE_NAME: sam-messages-table
+
       Policies:
         - DynamoDBWritePolicy:
             TableName: sam-messages-table
@@ -43,6 +47,10 @@ Resources:
       Handler: get_messages.lambda_handler
       Runtime: python3.12
       CodeUri: src/
+
+      Environment:
+        Variables:
+          TABLE_NAME: sam-messages-table
 
       Policies:
         - DynamoDBReadPolicy:
