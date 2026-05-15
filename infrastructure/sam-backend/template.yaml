@@ -24,9 +24,16 @@ Resources:
       KeySchema:
         - AttributeName: id
           KeyType: HASH
+  
+  MessagesDLQ:
+    Type: AWS::SQS::Queue
 
   MessagesQueue:
     Type: AWS::SQS::Queue
+    Properties:
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt MessagesDLQ.Arn
+        maxReceiveCount: 3
   
   CreateMessageFunction:
     Type: AWS::Serverless::Function
