@@ -43,6 +43,9 @@ Resources:
         - DynamoDBWritePolicy:
             TableName: !Ref TableName
 
+        - SQSSendMessagePolicy:
+            QueueName: !GetAtt MessagesQueue.QueueName
+
       Events:
         MessageApi:
           Type: Api
