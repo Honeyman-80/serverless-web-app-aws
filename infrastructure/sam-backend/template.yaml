@@ -11,12 +11,19 @@ Parameters:
 
 Resources:
 
-  DatabaseStack:
-    Type: AWS::Serverless::Application
+  MessagesTable:
+    Type: AWS::DynamoDB::Table
     Properties:
-      Location: templates/database.yaml
-      Parameters:
-        TableName: !Ref TableName
+      TableName: !Ref TableName
+      BillingMode: PAY_PER_REQUEST
+
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
   
   MessagesDLQ:
     Type: AWS::SQS::Queue
@@ -116,4 +123,4 @@ Outputs:
 
   MessagesTableName:
     Description: DynamoDB table name
-    Value: !GetAtt DatabaseStack.Outputs.MessagesTableName
+    Value: !Ref MessagesTable
