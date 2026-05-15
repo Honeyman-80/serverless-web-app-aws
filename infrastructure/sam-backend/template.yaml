@@ -19,15 +19,15 @@ Resources:
         - AttributeName: id
           KeyType: HASH
 
-  MessagesFunction:
+  CreateMessageFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: app.lambda_handler
+      Handler: create_message.lambda_handler
       Runtime: python3.12
       CodeUri: src/
 
       Policies:
-        - DynamoDBCrudPolicy:
+        - DynamoDBWritePolicy:
             TableName: sam-messages-table
 
       Events:
@@ -37,6 +37,18 @@ Resources:
             Path: /message
             Method: post
 
+  GetMessagesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: get_messages.lambda_handler
+      Runtime: python3.12
+      CodeUri: src/
+
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: sam-messages-table
+
+      Events:
         GetMessagesApi:
           Type: Api
           Properties:
