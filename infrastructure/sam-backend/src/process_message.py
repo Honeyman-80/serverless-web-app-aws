@@ -10,7 +10,8 @@ table = dynamodb.Table(table_name)
 
 
 def lambda_handler(event, context):
-
+    raise Exception("Simulated DLQ alarm test failure")
+    
     for record in event.get("Records", []):
 
         item = json.loads(record["body"])
