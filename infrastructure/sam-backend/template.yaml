@@ -5,9 +5,13 @@ Description: Simple SAM backend
 
 Parameters:
 
+  EnvironmentName:
+    Type: String
+    Default: dev
+
   TableName:
     Type: String
-    Default: sam-messages-table
+    Default: !Sub "sam-messages-table-${EnvironmentName}"
 
 Resources:
 
