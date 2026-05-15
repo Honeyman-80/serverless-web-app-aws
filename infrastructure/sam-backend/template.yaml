@@ -76,3 +76,12 @@ Resources:
           Properties:
             Path: /hello
             Method: get
+
+Outputs:
+  ApiBaseUrl:
+    Description: Base URL for the deployed API
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
+
+  MessagesTableName:
+    Description: DynamoDB table name
+    Value: !Ref MessagesTable
