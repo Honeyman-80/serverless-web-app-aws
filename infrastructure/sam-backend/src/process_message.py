@@ -15,8 +15,6 @@ def lambda_handler(event, context):
 
         item = json.loads(record["body"])
 
-        raise Exception("Simulated processing failure")
-
         table.put_item(Item=item)
 
     return {
