@@ -11,7 +11,7 @@ Parameters:
 
   TableName:
     Type: String
-    Default: !Sub "sam-messages-table-${EnvironmentName}"
+    Default: sam-messages-table-dev
 
 Resources:
 
