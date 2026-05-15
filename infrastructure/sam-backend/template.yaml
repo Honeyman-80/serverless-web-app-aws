@@ -51,6 +51,28 @@ Resources:
             Path: /message
             Method: post
 
+  ProcessMessageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: process_message.lambda_handler
+      Runtime: python3.12
+      CodeUri: src/
+
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref TableName
+
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: !Ref TableName
+
+      Events:
+        MessagesQueueEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt MessagesQueue.Arn
+            BatchSize: 10
+
   GetMessagesFunction:
     Type: AWS::Serverless::Function
     Properties:
