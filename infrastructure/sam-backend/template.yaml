@@ -39,10 +39,8 @@ Resources:
         Variables:
           TABLE_NAME: !Ref TableName
           QUEUE_URL: !Ref MessagesQueue
+      
       Policies:
-        - DynamoDBWritePolicy:
-            TableName: !Ref TableName
-
         - SQSSendMessagePolicy:
             QueueName: !GetAtt MessagesQueue.QueueName
 
