@@ -3,11 +3,9 @@ import uuid
 import boto3
 import os
 
-dynamodb = boto3.resource("dynamodb")
+sqs = boto3.client("sqs")
 
-table_name = os.environ["TABLE_NAME"]
-
-table = dynamodb.Table(table_name)
+queue_url = os.environ["QUEUE_URL"]
 
 
 def lambda_handler(event, context):
@@ -21,7 +19,10 @@ def lambda_handler(event, context):
         "message": message
     }
 
-    table.put_item(Item=item)
+    sqs.send_message(
+        QueueUrl=queue_url,
+        MessageBody=json.dumps(item)
+    )
 
     return {
         "statusCode": 200,
@@ -29,7 +30,7 @@ def lambda_handler(event, context):
             "Content-Type": "application/json"
         },
         "body": json.dumps({
-            "message": "Message saved!",
+            "message": "Message sent to queue!",
             "item": item
         })
     }
