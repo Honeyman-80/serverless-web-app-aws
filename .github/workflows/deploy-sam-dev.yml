@@ -1,6 +1,8 @@
 name: Deploy SAM Backend Dev
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - main
