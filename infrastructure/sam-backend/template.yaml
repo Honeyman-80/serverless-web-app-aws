@@ -25,6 +25,9 @@ Resources:
         - AttributeName: id
           KeyType: HASH
 
+  MessagesQueue:
+    Type: AWS::SQS::Queue
+  
   CreateMessageFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -35,7 +38,7 @@ Resources:
       Environment:
         Variables:
           TABLE_NAME: !Ref TableName
-
+          QUEUE_URL: !Ref MessagesQueue
       Policies:
         - DynamoDBWritePolicy:
             TableName: !Ref TableName
