@@ -32,3 +32,7 @@ jobs:
       - name: Deploy SAM app to prod
         working-directory: infrastructure/sam-backend
         run: sam deploy --stack-name sam-backend-prod --region us-east-1 --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides EnvironmentName=prod TableName=sam-messages-table-prod --no-confirm-changeset --resolve-s3 --no-fail-on-empty-changeset
+
+      - name: Smoke test prod API
+        run: |
+          curl --fail https://np8s8oehmd.execute-api.us-east-1.amazonaws.com/Prod/hello
