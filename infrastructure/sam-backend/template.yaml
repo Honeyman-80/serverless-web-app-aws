@@ -16,6 +16,7 @@ Parameters:
 Resources:
 
   MessagesTable:
+    DeletionPolicy: Retain
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: !Ref TableName
