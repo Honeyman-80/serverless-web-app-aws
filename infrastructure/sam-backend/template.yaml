@@ -79,7 +79,6 @@ Resources:
       Handler: process_message.lambda_handler
       Runtime: python3.12
       Timeout: 30
-      ReservedConcurrentExecutions: 1
       CodeUri: src/
 
       Environment:
