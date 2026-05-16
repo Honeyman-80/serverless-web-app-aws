@@ -11,10 +11,10 @@ table = dynamodb.Table(table_name)
 
 def lambda_handler(event, context):
 
+    print(f"Processing batch with {len(event.get('Records', []))} records")
+
     for record in event.get("Records", []):
-
         item = json.loads(record["body"])
-
         table.put_item(Item=item)
 
     return {
