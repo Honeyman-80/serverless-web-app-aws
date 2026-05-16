@@ -31,4 +31,4 @@ jobs:
 
       - name: Deploy SAM app to prod
         working-directory: infrastructure/sam-backend
-        run: sam deploy --stack-name sam-backend-prod --region us-east-1 --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides EnvironmentName=prod TableName=sam-messages-table-prod --resolve-s3 --no-confirm-changeset --no-fail-on-empty-changeset
+        run: sam deploy --stack-name sam-backend-prod --region us-east-1 --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides EnvironmentName=prod TableName=sam-messages-table-prod --resolve-s3 --no-fail-on-empty-changeset
