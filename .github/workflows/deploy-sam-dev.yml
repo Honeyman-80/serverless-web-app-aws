@@ -9,6 +9,10 @@ on:
     paths:
       - "infrastructure/sam-backend/**"
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   deploy-dev:
     uses: ./.github/workflows/reusable-sam-deploy.yml
