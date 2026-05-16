@@ -1,1 +1,52 @@
-reusable-sam-deploy.yml
+name: Reusable SAM Deploy
+
+on:
+  workflow_call:
+    inputs:
+      stack-name:
+        required: true
+        type: string
+      environment-name:
+        required: true
+        type: string
+      table-name:
+        required: true
+        type: string
+      api-url:
+        required: false
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment-name }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::654375431894:role/GitHubActionsSamDevDeployRole
+          aws-region: us-east-1
+
+      - name: Set up SAM CLI
+        uses: aws-actions/setup-sam@v2
+
+      - name: Build SAM app
+        working-directory: infrastructure/sam-backend
+        run: sam build --no-cached
+
+      - name: Deploy SAM app
+        working-directory: infrastructure/sam-backend
+        run: sam deploy --stack-name ${{ inputs.stack-name }} --region us-east-1 --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides EnvironmentName=${{ inputs.environment-name }} TableName=${{ inputs.table-name }} --no-confirm-changeset --resolve-s3 --no-fail-on-empty-changeset
+
+      - name: Smoke test API
+        if: ${{ inputs.api-url != '' }}
+        run: |
+          curl --fail ${{ inputs.api-url }}/hello
