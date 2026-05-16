@@ -36,6 +36,7 @@ Resources:
   MessagesQueue:
     Type: AWS::SQS::Queue
     Properties:
+      QueueName: !Sub "${EnvironmentName}-messages-queue"
       RedrivePolicy:
         deadLetterTargetArn: !GetAtt MessagesDLQ.Arn
         maxReceiveCount: 3
