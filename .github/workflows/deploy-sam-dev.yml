@@ -9,31 +9,11 @@ on:
     paths:
       - "infrastructure/sam-backend/**"
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
   deploy-dev:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::654375431894:role/GitHubActionsSamDevDeployRole
-          aws-region: us-east-1
-
-      - name: Set up SAM CLI
-        uses: aws-actions/setup-sam@v2
-
-      - name: Build SAM app
-        working-directory: infrastructure/sam-backend
-        run: sam build --no-cached
-
-      - name: Deploy SAM app to dev
-        working-directory: infrastructure/sam-backend
-        run: sam deploy --stack-name sam-backend-dev --region us-east-1 --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides EnvironmentName=dev TableName=sam-messages-table-dev --resolve-s3 --no-confirm-changeset --no-fail-on-empty-changeset
+    uses: ./.github/workflows/reusable-sam-deploy.yml
+    with:
+      stack-name: sam-backend-dev
+      environment-name: dev
+      table-name: sam-messages-table-dev
+      api-url: https://ekufigu896.execute-api.us-east-1.amazonaws.com/Prod
