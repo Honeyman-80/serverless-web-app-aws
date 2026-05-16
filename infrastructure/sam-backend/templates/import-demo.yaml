@@ -1,1 +1,13 @@
+cat > templates/import-demo.yaml <<'EOF'
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Demo stack that imports the messages queue URL from another stack
 
+Resources:
+  ImportedQueueParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /demo/imported-messages-queue-url
+      Type: String
+      Value:
+        Fn::ImportValue: sam-backend-dev-MessagesQueueUrl
+EOF
