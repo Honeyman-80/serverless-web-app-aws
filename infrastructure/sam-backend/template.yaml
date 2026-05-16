@@ -137,7 +137,10 @@ Outputs:
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
 
   MessagesQueueUrl:
+    Description: URL of the messages queue
     Value: !Ref MessagesQueue
+    Export:
+      Name: !Sub "${AWS::StackName}-MessagesQueueUrl"
 
   MessagesTableName:
     Description: DynamoDB table name
