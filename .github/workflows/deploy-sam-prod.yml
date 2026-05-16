@@ -9,30 +9,9 @@ permissions:
 
 jobs:
   deploy-prod:
-    runs-on: ubuntu-latest
-    environment: prod
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::654375431894:role/GitHubActionsSamDevDeployRole
-          aws-region: us-east-1
-
-      - name: Set up SAM CLI
-        uses: aws-actions/setup-sam@v2
-
-      - name: Build SAM app
-        working-directory: infrastructure/sam-backend
-        run: sam build --no-cached
-
-      - name: Deploy SAM app to prod
-        working-directory: infrastructure/sam-backend
-        run: sam deploy --stack-name sam-backend-prod --region us-east-1 --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides EnvironmentName=prod TableName=sam-messages-table-prod --no-confirm-changeset --resolve-s3 --no-fail-on-empty-changeset
-
-      - name: Smoke test prod API
-        run: |
-          curl --fail https://np8s8oehmd.execute-api.us-east-1.amazonaws.com/Prod/hello
+    uses: ./.github/workflows/reusable-sam-deploy.yml
+    with:
+      stack-name: sam-backend-prod
+      environment-name: prod
+      table-name: sam-messages-table-prod
+      api-url: https://np8s8oehmd.execute-api.us-east-1.amazonaws.com/Prod
