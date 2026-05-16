@@ -136,6 +136,9 @@ Outputs:
     Description: Base URL for the deployed API
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"
 
+  MessagesQueueUrl:
+    Value: !Ref MessagesQueue
+
   MessagesTableName:
     Description: DynamoDB table name
     Value: !Ref MessagesTable
