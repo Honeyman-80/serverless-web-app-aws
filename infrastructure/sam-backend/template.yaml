@@ -34,6 +34,7 @@ Resources:
     Type: AWS::SQS::Queue
 
   MessagesQueue:
+    DeletionPolicy: Retain
     Type: AWS::SQS::Queue
     Properties:
       QueueName: !Sub "${EnvironmentName}-messages-queue"
