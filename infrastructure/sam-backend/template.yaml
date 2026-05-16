@@ -37,6 +37,7 @@ Resources:
     DeletionPolicy: Retain
     Type: AWS::SQS::Queue
     Properties:
+      VisibilityTimeout: 30
       QueueName: !Sub "${EnvironmentName}-messages-queue"
       RedrivePolicy:
         deadLetterTargetArn: !GetAtt MessagesDLQ.Arn
